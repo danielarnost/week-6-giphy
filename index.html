@@ -1,0 +1,110 @@
+<html>
+
+<head>
+<meta charset="UTF-8">    
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+<link href="assets/css/style.css" type="text/css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1"><!--every time-->
+
+<title>Dans GIPHY HW</title>
+</head>
+
+<body> 
+<div class="form-inline" id="add">
+			<label for="animal-input">Add an animal: </label>
+				<input type="text" class="form-control" id="add">
+				<input id="addAnimal" type="submit" value ="submit">
+				
+			</div> 
+    <div id="buttons">
+        <button data-animal="cats">cat</button>
+        <button data-animal="dogs">dog</button>
+        <button data-animal="goats">hedgehog</button>
+        <button data-animal="mokeys">monkey</button>
+        <button data-animal="otters">otters</button>
+        <button data-animal="pandas">pandas</button>
+        <button data-animal="rabbits">rabbits</button>
+        <button data-animal="sloth">sloths</button>
+        
+</div>
+
+    <div id="gifsAppearHere">
+    </div>
+
+    <script src='http://code.jquery.com/jquery-2.1.3.min.js'></script>
+<script type="text/javascript">
+    $('button').on('click', function() {
+        var animal = $(this).data('animal');
+        
+        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + animal + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+
+       
+//you can use ratings here after equals
+        $.ajax({
+                url: queryURL,
+                method: 'GET'
+            })
+            .done(function(response) {
+                var results = response.data;
+                console.log(results)
+//grabbing response from URL, creating the forloop for the above array of gifs iterate thogh gifs
+                for (var i = 0; i < results.length; i++) {
+
+//dont use one letter variables this new condition filters out stuff jeff added to the original get url query
+               //     if(result[i].rating != "r" && results[i].rating!="pg-13"){}
+
+
+
+                    var gifDiv = $('<div class="item">')
+// storing div in gif div variable
+                    var rating = results[i].rating;
+
+                    var p = $('<p>').text("Rating: " + rating);
+//create image 
+                    var animalImage = $('<img class = "animalImage" id = anIMG>');
+                    //var animalImage = $('<img>');
+                    animalImage.attr('src', results[i].images.fixed_height.url);
+                    animalImage.attr('data-still', results[i].images.fixed_height_still.url);
+                    animalImage.attr('data-animate', results[i].images.fixed_height.url);
+                    animalImage.attr('data-state','animated');
+					//animalImage.attr('src', results[i].images.fixed_height.url);
+                    gifDiv.append(p)
+                    gifDiv.append(animalImage)
+                  
+//prepend - add them to the beginning
+                    $('#gifsAppearHere').prepend(gifDiv);
+                }
+
+            });
+    });
+
+    
+$(document).on('click', '.animalImage', function(){
+	
+ animalImage = $('<img class = "animalImage">');     
+var state = $(this).attr('data-state'); 
+	       
+if(state =='still'){ 
+    var url = $(this).attr('data-animate');
+$(this).attr('data-state', 'animate');
+$(this).attr('src', url)
+
+
+}else{
+
+    var url = $(this).attr('data-still'); 
+$(this).attr('data-state', 'still');
+$(this).attr('src', url);
+
+}
+})
+
+$('#addAnimal').on('click', function(){
+alert('hello')
+})
+//append to end of buttons somehow.
+</script>
+</body>
+
+</html>
