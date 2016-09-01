@@ -2,7 +2,7 @@
 
 	float:right;
 }
-.animalImage{
+.item{
 
-display: inline;
+display: inline-block;
 }
