@@ -1,3 +1,5 @@
+
+
  $(document).on('click', 'button', function() {
         var animal = $(this).data('animal');
         
@@ -67,8 +69,15 @@ $(this).attr('src', url);
 //add conditonal to make value of added button equal to data-animal?
 
 $('#addAnimal').on('click', function(){
-var addedButton = $('<button>').appendTo('#buttons')
-$(addedButton).attr('data-animal', $('#adder').val())
-$(addedButton).text($('#adder').val().trim())
+
+var title = $('#adder').val().trim();
+console.dir(title);
+
+if (title !== "") {
+    var addedButton = $('<button>').appendTo('#buttons')
+    $(addedButton).attr('data-animal', title)
+    $(addedButton).text(title)
+}
+
 
 })
